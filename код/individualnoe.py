@@ -2,31 +2,39 @@
 # -*- coding: utf-8 -*-
 
 
-def main():
-    # Ввод данных с клавиатуры
-    routes = []
-    n = int(input("Введите количество маршрутов: "))
-    for _ in range(n):
-        route = {}
-        route['название начального пункта маршрута'] = input("Введите название начального пункта маршрута: ")
-        route['название конечного пункта маршрута'] = input("Введите название конечного пункта маршрута: ")
-        route['номер маршрута'] = int(input("Введите номер маршрута: "))
-        routes.append(route)
+# Функция для добавления записи в список
+def add_person(people_list):
+    person = {}
+    print("Введите данные о человеке:")
+    person["фамилия"] = input("Фамилия: ")
+    person["имя"] = input("Имя: ")
+    person["знак Зодиака"] = input("Знак Зодиака: ")
+    birthday = input("Дата рождения в формате дд.мм.гггг через точку: ").split('.')
+    person["дата рождения"] = list(map(int, birthday))
+    people_list.append(person)
+    people_list.sort(key=lambda x: tuple(x["дата рождения"]))  # Сортировка по датам рождения
+    print("Данные о человеке добавлены.")
 
-    # Сортировка по номерам маршрутов
-    sorted_routes = sorted(routes, key=lambda x: x['номер маршрута'])
 
-    # Вывод на экран информации о маршрутах
-    start_end_point = input("Введите название пункта: ")
+# Функция для вывода информации о людях по знаку Зодиака
+def display_people_by_zodiac(people_list, zodiac_sign):
     found = False
-    for route in sorted_routes:
-        if route['название начального пункта маршрута'] == start_end_point or route['название конечного пункта маршрута'] == start_end_point:
-            print("Маршрут:", route)
+    print(f"Люди с знаком Зодиака '{zodiac_sign}':")
+    for person in people_list:
+        if person["знак Зодиака"] == zodiac_sign:
+            print(f"{person['фамилия']} {person['имя']} - {person['дата рождения'][0]}.{person['дата рождения'][1]}.{person['дата рождения'][2]}")
             found = True
-
     if not found:
-        print("Нет маршрутов, начинающихся или заканчивающихся в указанном пункте.")
+        print(f"Нет людей с знаком Зодиака '{zodiac_sign}'.")
 
 
-if __name__ == "__main__":
-    main()
+# Список людей в виде словарей
+people = []
+
+# Добавление данных о людях
+add_person(people)
+add_person(people)
+
+# Ввод знака Зодиака для поиска
+search_zodiac = input("Введите знак Зодиака для поиска: ")
+display_people_by_zodiac(people, search_zodiac)
